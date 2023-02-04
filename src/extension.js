@@ -36,6 +36,7 @@ const Domain = Gettext.domain(Me.metadata.uuid)
 const { ngettext } = Domain
 
 const _shortcutsBindingIds = []
+const _previousTiledWindows = {}
 
 function init() {
   ExtensionUtils.initTranslations(Me.metadata.uuid)
@@ -56,6 +57,7 @@ class Extension {
     this._bindShortcut("shortcut-tile-window-to-bottom", this._tileWindowBottom.bind(this))
     this._bindShortcut("shortcut-tile-window-to-bottom-left", this._tileWindowBottomLeft.bind(this))
     this._bindShortcut("shortcut-tile-window-to-bottom-right", this._tileWindowBottomRight.bind(this))
+    this._bindShortcut("shortcut-tile-window-restore", this._restoreWindow.bind(this))
     this._bindShortcut("shortcut-increase-gap-size", this._increaseGapSize.bind(this))
     this._bindShortcut("shortcut-decrease-gap-size", this._decreaseGapSize.bind(this))
   }
@@ -223,6 +225,10 @@ class Extension {
       }
     }
 
+    if (!(windowId in _previousTiledWindows)) {
+        _previousTiledWindows[windowId] = window.get_frame_rect();
+    }
+
     window.unmaximize(Meta.MaximizeFlags.BOTH)
     window.move_resize_frame(false, x, y, width, height)
 
@@ -264,5 +270,19 @@ class Extension {
 
   _tileWindowTopRight() {
     this._tileWindow(true, false, false, true)
+  }
+
+  _restoreWindow() {
+    const window = global.display.get_focus_window()
+    if (!window) return
+
+    const windowId = window.get_id()
+
+    if (!(windowId in _previousTiledWindows)) return
+
+    let { x, y, width, height } = _previousTiledWindows[windowId]
+    window.move_resize_frame(false, x, y, width, height)
+
+    delete _previousTiledWindows[windowId]
   }
 }

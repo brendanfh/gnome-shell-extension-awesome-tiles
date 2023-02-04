@@ -48,6 +48,7 @@ const PrefsWidget = GObject.registerClass({
     'tile_window_to_bottom',
     'tile_window_to_bottom_left',
     'tile_window_to_bottom_right',
+    'tile_window_restore',
   ]
 }, class PrefsWidget extends Gtk.Box {
   _init(params = {}) {
@@ -69,6 +70,7 @@ const PrefsWidget = GObject.registerClass({
       this._tile_window_to_bottom,
       this._tile_window_to_bottom_left,
       this._tile_window_to_bottom_right,
+      this._tile_window_restore,
     ]
 
     this._settings = ExtensionUtils.getSettings()

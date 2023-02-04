@@ -86,6 +86,15 @@
         Shortcut to tile the window in focus to bottom right.
       </description>
     </key>
+    <key name="shortcut-tile-window-restore" type="as">
+      <default>
+          <![CDATA[['<Control><Super>Space']]]>
+      </default>
+      <summary>Restore tiled window</summary>
+      <description>
+          Shortcut to restore a tiled window to its original position.
+      </description>
+    </key>
     <key name="shortcut-align-window-to-center" type="as">
       <default>
         <![CDATA[['<Super>KP_0']]]>
